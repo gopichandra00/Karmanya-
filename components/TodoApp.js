@@ -18,6 +18,10 @@ export default function TodoApp({ onSignOut }) {
     gender: "",
   });
 
+  const getStorageKey = (email) => {
+    return email ? `${STORAGE_KEY}-${email}` : STORAGE_KEY;
+  };
+
   useEffect(() => {
     const user = getCurrentUser();
     setCurrentUser(user);
@@ -31,15 +35,23 @@ export default function TodoApp({ onSignOut }) {
   }, []);
 
   useEffect(() => {
-    const saved = window.localStorage.getItem(STORAGE_KEY);
+    if (!currentUser) {
+      setTodos([]);
+      return;
+    }
+
+    const saved = window.localStorage.getItem(getStorageKey(currentUser.email));
     if (saved) {
       setTodos(JSON.parse(saved));
+    } else {
+      setTodos([]);
     }
-  }, []);
+  }, [currentUser]);
 
   useEffect(() => {
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(todos));
-  }, [todos]);
+    if (!currentUser) return;
+    window.localStorage.setItem(getStorageKey(currentUser.email), JSON.stringify(todos));
+  }, [todos, currentUser]);
 
   const activeTodos = todos.filter((todo) => !todo.completed);
   const completedTodos = todos.filter((todo) => todo.completed);
@@ -153,19 +165,23 @@ export default function TodoApp({ onSignOut }) {
     <section className={styles.appContainer}>
       <header className={styles.appHeader}>
         <div className={styles.headerContent}>
-          <div>
-            <h1>Karmanya</h1>
-            {currentUser && (
-              <div className={styles.userInfo}>
-                <p className={styles.userName}>{currentUser.fullName}</p>
-                <p className={styles.userDetails}>{currentUser.profession} • {currentUser.email}</p>
-              </div>
-            )}
+          <div className={styles.brandBlock}>
+            <div className={styles.logoBadge}>K</div>
+            <div>
+              <h1>Karmanya</h1>
+              <p className={styles.tagline}>A calm productivity companion.</p>
+            </div>
           </div>
           <button onClick={handleEditProfile} className={styles.editProfileButton}>
             Edit Profile
           </button>
         </div>
+        {currentUser && (
+          <div className={styles.userInfo}>
+            <p className={styles.userName}>{currentUser.fullName}</p>
+            <p className={styles.userDetails}>{currentUser.profession} • {currentUser.email}</p>
+          </div>
+        )}
       </header>
 
       <PWAInstallPrompt />

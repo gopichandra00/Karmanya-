@@ -27,17 +27,76 @@
 .pageShell::after {
   content: '"Success is not final, failure is not fatal: It is the courage to continue that counts." - Winston Churchill';
   position: absolute;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  color: rgba(255, 255, 255, 0.8);
-  font-size: 1rem;
+  top: 50%;
+  right: 24px;
+  transform: translateY(-50%);
+  width: clamp(220px, 18vw, 280px);
+  padding: 24px 22px;
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 32px;
+  backdrop-filter: blur(18px);
+  color: rgba(255, 255, 255, 0.96);
+  font-size: 0.98rem;
+  font-weight: 500;
   font-style: italic;
-  text-align: center;
-  max-width: 90%;
-  line-height: 1.4;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
-  z-index: 1;
+  letter-spacing: 0.02em;
+  text-align: left;
+  line-height: 1.75;
+  text-shadow: 0 8px 30px rgba(0, 0, 0, 0.18);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.12);
+  z-index: 10;
+  pointer-events: none;
+}
+
+.brandBlock {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.logoBadge {
+  width: 68px;
+  height: 68px;
+  border-radius: 24px;
+  display: grid;
+  place-items: center;
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: white;
+  background: radial-gradient(circle at top left, #f8b500 0%, #ef5a7a 48%, #8c75f5 100%);
+  box-shadow: 0 20px 40px rgba(103, 84, 255, 0.25);
+}
+
+.tagline {
+  margin: 6px 0 0;
+  color: #4a5568;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.appHeader {
+  text-align: left;
+  margin-bottom: 30px;
+  position: relative;
+}
+
+.userInfo {
+  margin-top: 18px;
+}
+
+.userName {
+  margin: 0 0 4px 0;
+  color: #4a5568;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.userDetails {
+  margin: 0;
+  color: #718096;
+  font-size: 0.95rem;
+  font-weight: 500;
 }
 
 .container {
