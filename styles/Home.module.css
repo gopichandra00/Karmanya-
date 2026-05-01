@@ -4,7 +4,7 @@
   justify-content: center;
   align-items: center;
   padding: 24px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
   background-attachment: fixed;
   position: relative;
   overflow: hidden;
@@ -17,9 +17,27 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="rgba(255,255,255,0.1)"/><circle cx="80" cy="80" r="2" fill="rgba(255,255,255,0.1)"/><circle cx="50" cy="50" r="3" fill="rgba(255,255,255,0.05)"/></svg>');
-  background-size: 200px 200px;
-  opacity: 0.5;
+  background:
+    radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, rgba(120, 219, 226, 0.2) 0%, transparent 50%);
+  opacity: 0.6;
+}
+
+.pageShell::after {
+  content: '"Success is not final, failure is not fatal: It is the courage to continue that counts." - Winston Churchill';
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 1rem;
+  font-style: italic;
+  text-align: center;
+  max-width: 90%;
+  line-height: 1.4;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+  z-index: 1;
 }
 
 .container {
@@ -54,16 +72,11 @@
   position: relative;
 }
 
-.appHeader::after {
-  content: '';
-  position: absolute;
-  bottom: -10px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 60px;
-  height: 4px;
-  background: linear-gradient(90deg, #667eea, #764ba2);
-  border-radius: 2px;
+.headerContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
 }
 
 .appHeader h1 {
@@ -78,6 +91,163 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+}
+
+.userInfo {
+  margin-top: 8px;
+}
+
+.userName {
+  margin: 0 0 4px 0;
+  color: #a0aec0;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.userDetails {
+  margin: 0;
+  color: #a0aec0;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.headerActions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.editProfileButton {
+  padding: 10px 18px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #67d8ff 0%, #6a5cff 100%);
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 4px 15px rgba(103, 216, 255, 0.3);
+  font-size: 0.9rem;
+}
+
+.editProfileButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(103, 216, 255, 0.4);
+}
+
+.profileCard {
+  background: rgba(246, 250, 255, 0.95);
+  border-radius: 20px;
+  padding: 24px;
+  border: 1px solid rgba(102, 126, 234, 0.15);
+  margin-bottom: 28px;
+}
+
+.profileTitle {
+  margin: 0 0 18px 0;
+  font-size: 1.6rem;
+  color: #2d3748;
+}
+
+.profileForm {
+  display: grid;
+  gap: 16px;
+}
+
+.profileForm label {
+  display: grid;
+  gap: 8px;
+  color: #4a5568;
+  font-weight: 600;
+}
+
+.profileForm input,
+.profileForm select {
+  width: 100%;
+  padding: 14px 16px;
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  border-radius: 12px;
+  font-size: 1rem;
+  background: white;
+}
+
+.profileButtons {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.saveProfileButton,
+.cancelProfileButton {
+  padding: 12px 20px;
+  border: none;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.saveProfileButton {
+  background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(56, 161, 105, 0.25);
+}
+
+.cancelProfileButton {
+  background: #edf2f7;
+  color: #4a5568;
+}
+
+.saveProfileButton:hover,
+.cancelProfileButton:hover {
+  transform: translateY(-1px);
+}
+
+.appHeader::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 4px;
+  background: linear-gradient(90deg, #667eea, #764ba2);
+  border-radius: 2px;
+}
+
+.floatingSignOutButton {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: none;
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+  box-shadow: 0 8px 25px rgba(238, 90, 82, 0.4);
+  transition: all 0.3s ease;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.floatingSignOutButton:hover {
+  transform: scale(1.1);
+  box-shadow: 0 12px 35px rgba(238, 90, 82, 0.6);
+}
+
+.floatingSignOutButton:active {
+  transform: scale(0.95);
+}
+
+.floatingSignOutButton span {
+  display: block;
+  line-height: 1;
 }
 
 .hierarchicalList {
@@ -142,11 +312,17 @@
   box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
+.addTaskForm input,
+.addTaskForm button {
+  min-width: 0;
+}
+
 .addTaskForm input {
   padding: 14px 16px;
   border: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: 12px;
   font-size: 1rem;
+  width: 100%;
   background: rgba(255, 255, 255, 0.9);
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
@@ -167,6 +343,7 @@
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   box-shadow: 0 4px 15px rgba(79, 172, 254, 0.3);
+  width: 100%;
 }
 
 .addTaskForm button:hover {
@@ -299,8 +476,32 @@
 }
 
 @media (max-width: 768px) {
+  .pageShell::after {
+    font-size: 0.9rem;
+    bottom: 15px;
+    max-width: 95%;
+  }
+
+  .floatingSignOutButton {
+    bottom: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    font-size: 1.2rem;
+  }
+
+  .headerContent {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
   .addTaskForm {
     grid-template-columns: 1fr;
+  }
+
+  .addTaskForm input,
+  .addTaskForm button {
+    width: 100%;
   }
 
   .appHeader h1 {

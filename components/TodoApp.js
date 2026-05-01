@@ -1,13 +1,34 @@
 import { useEffect, useState } from "react";
 import styles from "../styles/Home.module.css";
+import { getCurrentUser, signOut, updateUserProfile } from "../utils/auth";
+import PWAInstallPrompt from "./PWAInstallPrompt";
 
 const STORAGE_KEY = "todo-list-app-items";
 
-export default function TodoApp() {
+export default function TodoApp({ onSignOut }) {
   const [todos, setTodos] = useState([]);
   const [newTodo, setNewTodo] = useState("");
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
+  const [currentUser, setCurrentUser] = useState(null);
+  const [isEditingProfile, setIsEditingProfile] = useState(false);
+  const [profileData, setProfileData] = useState({
+    fullName: "",
+    profession: "",
+    gender: "",
+  });
+
+  useEffect(() => {
+    const user = getCurrentUser();
+    setCurrentUser(user);
+    if (user) {
+      setProfileData({
+        fullName: user.fullName || "",
+        profession: user.profession || "",
+        gender: user.gender || "",
+      });
+    }
+  }, []);
 
   useEffect(() => {
     const saved = window.localStorage.getItem(STORAGE_KEY);
@@ -84,11 +105,120 @@ export default function TodoApp() {
     return `Completed in ${timeTaken} (${within ? 'Within deadline' : 'Out of deadline'})`;
   };
 
+  const handleSignOut = () => {
+    signOut();
+    onSignOut();
+  };
+
+  const handleEditProfile = () => {
+    setIsEditingProfile(true);
+  };
+
+  const handleProfileChange = (field, value) => {
+    setProfileData((current) => ({ ...current, [field]: value }));
+  };
+
+  const handleSaveProfile = () => {
+    if (!profileData.fullName.trim() || !profileData.profession.trim() || !profileData.gender) {
+      alert("Please complete all profile fields before saving.");
+      return;
+    }
+
+    const result = updateUserProfile(currentUser.email, {
+      fullName: profileData.fullName,
+      profession: profileData.profession,
+      gender: profileData.gender,
+    });
+
+    if (result.success) {
+      setCurrentUser(result.user);
+      setIsEditingProfile(false);
+    } else {
+      alert(result.message || "Could not update profile.");
+    }
+  };
+
+  const handleCancelProfile = () => {
+    if (currentUser) {
+      setProfileData({
+        fullName: currentUser.fullName || "",
+        profession: currentUser.profession || "",
+        gender: currentUser.gender || "",
+      });
+    }
+    setIsEditingProfile(false);
+  };
+
   return (
     <section className={styles.appContainer}>
       <header className={styles.appHeader}>
-        <h1>Karmanya</h1>
+        <div className={styles.headerContent}>
+          <div>
+            <h1>Karmanya</h1>
+            {currentUser && (
+              <div className={styles.userInfo}>
+                <p className={styles.userName}>{currentUser.fullName}</p>
+                <p className={styles.userDetails}>{currentUser.profession} • {currentUser.email}</p>
+              </div>
+            )}
+          </div>
+          <button onClick={handleEditProfile} className={styles.editProfileButton}>
+            Edit Profile
+          </button>
+        </div>
       </header>
+
+      <PWAInstallPrompt />
+
+      {isEditingProfile && (
+        <div className={styles.profileCard}>
+          <h2 className={styles.profileTitle}>Edit Profile</h2>
+          <div className={styles.profileForm}>
+            <label>
+              Full Name
+              <input
+                type="text"
+                value={profileData.fullName}
+                onChange={(e) => handleProfileChange("fullName", e.target.value)}
+              />
+            </label>
+            <label>
+              Profession
+              <input
+                type="text"
+                value={profileData.profession}
+                onChange={(e) => handleProfileChange("profession", e.target.value)}
+              />
+            </label>
+            <label>
+              Gender
+              <select
+                value={profileData.gender}
+                onChange={(e) => handleProfileChange("gender", e.target.value)}
+              >
+                <option value="">Select gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+                <option value="prefer-not-to-say">Prefer not to say</option>
+              </select>
+            </label>
+            <div className={styles.profileButtons}>
+              <button type="button" onClick={handleSaveProfile} className={styles.saveProfileButton}>
+                Save Profile
+              </button>
+              <button type="button" onClick={handleCancelProfile} className={styles.cancelProfileButton}>
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Floating Sign Out Button */}
+      <button onClick={handleSignOut} className={styles.floatingSignOutButton} title="Sign Out">
+        <span>🚪</span>
+      </button>
 
       <div className={styles.hierarchicalList}>
         <div className={styles.section}>
